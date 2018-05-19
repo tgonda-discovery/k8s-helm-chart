@@ -1,0 +1,82 @@
+{{ if .Values.storage }} 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: divvycloud-mysql-pv-claim
+  labels:
+    app: mysql
+spec:
+  storageClassName: {{ .Values.storage.storageClass | default "rook-block" }}
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.storage.size | default "20Gi" }}
+{{ end  }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "divvycloud.name" . }}-mysql
+  labels:
+    app: {{ template "divvycloud.name" . }}-mysql
+    chart: {{ template "divvycloud.chart" . }}-mysql
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 3306
+      protocol: TCP
+  selector:
+    app: {{ template "divvycloud.name" . }}-mysql
+    release: {{ .Release.Name }}
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "divvycloud.name" . }}-mysql
+  release: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "divvycloud.name" . }}-mysql
+      release: {{ .Release.Name }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: {{ template "divvycloud.name" . }}-mysql
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - image: divvycloud/quickstart-db
+        args:
+          - "--ignore-db-dir=lost+found --datadir=/var/lib/mysq/data"
+        name: {{ template "divvycloud.name" . }}-mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: divvy
+        - name:  MYSQL_USER
+          value: divvy
+        - name:  MYSQL_PASSWORD
+          value: divvy 
+        - name: MYSQL_DATABASE
+          value: divvy
+        ports:
+        - containerPort: 3306
+    {{ if .Values.storage }}
+        volumeMounts:
+        - name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
+          mountPath: /var/lib/mysql
+          subpath: data
+      volumes: 
+      - name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
+        PersistentVolumeClaim: 
+          claimName: divvycloud-mysql-pv-claim
+    {{ end }}

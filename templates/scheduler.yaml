@@ -1,0 +1,43 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "divvycloud.name" . }}-scheduler
+  labels:
+    app: {{ template "divvycloud.name" . }}-scheduler
+    chart: {{ template "divvycloud.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ if .Values.scheduler  }}  {{ .Values.scheduler.replicaCount | default 2 }} {{ else }} 2 {{ end }}
+  selector:
+    matchLabels:
+      app: {{ template "divvycloud.name" . }}-scheduler
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "divvycloud.name" . }}-scheduler
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ['divvycloudjobscheduler','-n','--do-db-upgrade']
+          envFrom:
+            - secretRef:
+                name: {{ template "divvycloud.name" . }}-secret           
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
