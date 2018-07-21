@@ -16,6 +16,11 @@ Below you will find steps on how to deploy DivvyCloud to a Kubernetes cluster.
 
 ## Installation 
 
+### Values file
+
+  The values.yaml file located in the divvycloud/ directory allows you to configure your deployment.
+  Please see the comments in the values.yaml for further documentation. 
+
 ### Important note
   This helm chart uses the k8s Application resource type. 
   *Please ensure you run the make crd/install prior to installing DivvyCloud*
