@@ -9,17 +9,16 @@ Below you will find steps on how to deploy DivvyCloud to a Kubernetes cluster.
 
 ## Tool dependencies
 
-- [gcloud](https://cloud.google.com/sdk/)
 - [docker](https://docs.docker.com/install/)
-- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/). You can install
-  this tool as part of `gcloud`.
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [make](https://www.gnu.org/software/make/)
 
 
 ## Installation 
 
 ### Important note
-  This helm chart uses the k8s Application resource type. Please ensure you run the make crd/install prior to installing DivvyCloud
+  This helm chart uses the k8s Application resource type. 
+  *Please ensure you run the make crd/install prior to installing DivvyCloud*
 
 ### Building and installing 
 	Clone down this repository and use the following make commands:
