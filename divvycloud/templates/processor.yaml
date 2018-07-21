@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.imageName }}
+          image: {{ .Values.image.imageName }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           args: ['divvycloudworker','-t','processor','-n']
           envFrom:
