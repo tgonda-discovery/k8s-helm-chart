@@ -1,29 +1,30 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "divvycloud.name" . }}-ondemand
+  name: {{ template "divvycloud.name" . }}-harvester
   labels:
-    app: {{ template "divvycloud.name" . }}-ondemand
+    app: {{ template "divvycloud.name" . }}-harvester
     chart: {{ template "divvycloud.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+
 spec:
-  replicas: {{ if .Values.ondemand  }}  {{ .Values.ondemand.replicaCount | default 2 }} {{ else }} 2 {{ end }}
+  replicas: {{ if .Values.harvester  }}  {{ .Values.harvester.replicaCount | default 2 }} {{ else }} 2 {{ end }}
   selector:
     matchLabels:
-      app: {{ template "divvycloud.name" . }}-ondemand
+      app: {{ template "divvycloud.name" . }}-harvester
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "divvycloud.name" . }}-ondemand
+        app: {{ template "divvycloud.name" . }}-harvester
         release: {{ .Release.Name }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args: ['divvycloudworker','-t','on-demand','-n']
+          image: {{ .Values.imageName }}
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          args: ['divvycloudworker','-t','harvester','-n']
           envFrom:
             - secretRef:
                 name: {{ template "divvycloud.name" . }}-secret 

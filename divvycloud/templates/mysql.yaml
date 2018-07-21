@@ -2,16 +2,15 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: divvycloud-mysql-pv-claim
+  name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
   labels:
     app: mysql
 spec:
-  storageClassName: {{ .Values.storage.storageClass | default "rook-block" }}
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.storage.size | default "20Gi" }}
+      storage: {{ .Values.storage.size | default "30Gi" }}
 {{ end  }}
 
 ---
@@ -24,6 +23,7 @@ metadata:
     chart: {{ template "divvycloud.chart" . }}-mysql
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ template "divvycloud.name" . }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -33,14 +33,11 @@ spec:
     app: {{ template "divvycloud.name" . }}-mysql
     release: {{ .Release.Name }}
 
-
-
 ---
-apiVersion: apps/v1
+apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: {{ template "divvycloud.name" . }}-mysql
-  release: {{ .Release.Name }}
 spec:
   selector:
     matchLabels:
@@ -59,24 +56,21 @@ spec:
         args:
           - "--ignore-db-dir=lost+found --datadir=/var/lib/mysq/data"
         name: {{ template "divvycloud.name" . }}-mysql
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: divvy
-        - name:  MYSQL_USER
-          value: divvy
-        - name:  MYSQL_PASSWORD
-          value: divvy 
-        - name: MYSQL_DATABASE
-          value: divvy
+        envFrom:
+          - secretRef:
+              name: {{ template "divvycloud.name" . }}-secret           
         ports:
         - containerPort: 3306
     {{ if .Values.storage }}
         volumeMounts:
         - name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
           mountPath: /var/lib/mysql
-          subpath: data
+          subPath: data
       volumes: 
       - name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
-        PersistentVolumeClaim: 
-          claimName: divvycloud-mysql-pv-claim
     {{ end }}
+
+
+
+
+

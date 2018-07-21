@@ -1,32 +1,32 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "divvycloud.name" . }}-processor
+  name: {{ template "divvycloud.name" . }}-ondemand
   labels:
-    app: {{ template "divvycloud.name" . }}-processor
+    app: {{ template "divvycloud.name" . }}-ondemand
     chart: {{ template "divvycloud.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: {{ if .Values.processor  }}  {{ .Values.processor.replicaCount | default 2 }} {{ else }} 2 {{ end }}
+  replicas: {{ if .Values.ondemand  }}  {{ .Values.ondemand.replicaCount | default 2 }} {{ else }} 2 {{ end }}
   selector:
     matchLabels:
-      app: {{ template "divvycloud.name" . }}-processor
+      app: {{ template "divvycloud.name" . }}-ondemand
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "divvycloud.name" . }}-processor
+        app: {{ template "divvycloud.name" . }}-ondemand
         release: {{ .Release.Name }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args: ['divvycloudworker','-t','processor','-n']
+          image: {{ .Values.imageName }}
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          args: ['divvycloudworker','-t','on-demand','-n']
           envFrom:
             - secretRef:
-                name: {{ template "divvycloud.name" . }}-secret           
+                name: {{ template "divvycloud.name" . }}-secret 
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

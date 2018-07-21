@@ -17,11 +17,10 @@ spec:
     release: {{ .Release.Name }}
 
 ---
-apiVersion: apps/v1
+apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: {{ template "divvycloud.name" . }}-redis
-  release: {{ .Release.Name }}
 spec:
   selector:
     matchLabels:
