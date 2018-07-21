@@ -10,4 +10,4 @@ app/install:
 
 .PHONY: app/uninstall
 app/uninstall:
-	helm delete $(APP_NAME)
+	helm delete $(APP_NAME) --purge
