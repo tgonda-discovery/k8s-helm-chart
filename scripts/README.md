@@ -1,3 +1,8 @@
+# Helm scripts 
+
+    This script will install helm on a newly created kube cluster 
+    It presumes you have installed the helm CLI locally. Please see [Helm Github](https://github.com/helm/helm)
+
 # Cluster scripts
 
 These scripts are intended to help with easily creating and destroying GKE clusters. 
