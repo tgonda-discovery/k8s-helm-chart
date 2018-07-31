@@ -51,6 +51,7 @@ make app/install
   For more information on this topic please see our [Docs](http://docs.divvycloud.com/latest/installation/legacy.html)
   
   DivvyCloud will look for and use two database schemas: 
+
     - divvy
     - divvykeys
 
@@ -59,6 +60,7 @@ make app/install
 #### Updating the Values.conf file 
 
   To configure an external MySQL environment, please edit the Values.yaml file and uncommend/update the following values:
+
     - database_host
     - database_port
     - database_user
