@@ -59,35 +59,36 @@ make app/install
 
 #### Updating the Values.conf file 
 
-  To configure an external MySQL environment, please edit the Values.yaml file and uncommend/update the following values:
+To configure an external MySQL environment, please edit the Values.yaml file and uncommend/update the following values:
 
-    - database_host
-    - database_port
-    - database_user
-    - database_password 
+- database_host
+- database_port
+- database_user
+- database_password 
 
 ### Using External Redis
 
-  DivvyCloud can perform reasonably well using just the internal Redis container. However, for production environments we highly recommend 
-  using an external redis system. 
+DivvyCloud can perform reasonably well using just the internal Redis container. However, for production environments we highly recommend 
+using an external redis system. 
 
 #### Setting up external Redis 
 
-  To configure an external Redis system, please edit the Values.yaml file and uncommend/update the following values:
-    - redis_host
+To configure an external Redis system, please edit the Values.yaml file and uncommend/update the following values:
+
+- redis_host
 
 ## Installation 
 
 ### Important note
-  This helm chart uses the k8s Application resource type. 
-  *Please ensure you run the make crd/install prior to installing DivvyCloud*
+This helm chart uses the k8s Application resource type. 
+*Please ensure you run the make crd/install prior to installing DivvyCloud*
 
 ### Installing 
-	Clone down this repository and use the following make commands:
+Clone this repository and use the following make commands:
 
-	* make crd/install to install the application CRD on the cluster. This needs to be done only once.
-	* make app/install to build all the container images and deploy the app to a target namespace on the cluster.
-	* make app/uninstall to delete the deployed app.
+* make crd/install to install the application CRD on the cluster. This needs to be done only once.
+* make app/install to build all the container images and deploy the app to a target namespace on the cluster.
+* make app/uninstall to delete the deployed app.
 
 ## Connecting to admin console
 
