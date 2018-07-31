@@ -21,7 +21,7 @@ The below instructions assumes:
  - Helm is installed and functional
 
 ### Helm
-We have included some convience scripts for installing helm into a raw GKE cluster. 
+We have included some convience scripts for installing helm into a raw GKE cluster.  Please see the scripts directory.
 
 If your cluster already has helm installed, you  only need to install the helm cli on your computer. 
 
