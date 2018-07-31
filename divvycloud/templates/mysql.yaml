@@ -1,3 +1,6 @@
+
+{{- if .Values.database_host -}} 
+{{- else -}}
 {{ if .Values.storage }} 
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -32,7 +35,6 @@ spec:
   selector:
     app: {{ template "divvycloud.name" . }}-mysql
     release: {{ .Release.Name }}
-
 ---
 apiVersion: apps/v1beta2
 kind: Deployment
@@ -70,7 +72,7 @@ spec:
       - name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
     {{ end }}
 
-
+{{- end -}}
 
 
 

@@ -1,6 +1,6 @@
 APP_NAME ?= divvycloud
 
-.PHONY: crd/install 
+.PHONY: crd/install
 crd/install:
 	kubectl create -f crd/app-crd.yaml
 
@@ -11,3 +11,7 @@ app/install:
 .PHONY: app/uninstall
 app/uninstall:
 	helm delete $(APP_NAME) --purge
+
+.PHONE: app/upgrade
+app/upgrade:
+	helm upgrade $(APP_NAME) divvycloud
