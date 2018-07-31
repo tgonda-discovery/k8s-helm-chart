@@ -16,12 +16,15 @@ Below you will find steps on how to deploy DivvyCloud to a Kubernetes cluster.
 ## Pre-reqs
 
 The below instructions assumes:
- * That you have a valid kube config file and uses the default context
- * Helm is installed and functional.
+
+ - That you have a valid kube config file and uses the default context
+ - Helm is installed and functional
 
 ### Helm
     We have included some convience scripts for installing helm into a raw GKE cluster. 
-     If your cluster already has helm installed, you  only need to install the helm cli on your computer. For instructions please see the [Helm github](https://github.com/helm/helm)
+    If your cluster already has helm installed, you  only need to install the helm cli on your computer. 
+
+    For instructions please see the [Helm github](https://github.com/helm/helm)
 
 
 ## Installing DivvyCloud
