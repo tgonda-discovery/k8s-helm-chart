@@ -9,7 +9,6 @@ Below you will find steps on how to deploy DivvyCloud to a Kubernetes cluster.
 
 ## Tool dependencies
 
-- [docker](https://docs.docker.com/install/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - [make](https://www.gnu.org/software/make/)
 - [helm](https://helm.sh/)
@@ -18,7 +17,14 @@ Below you will find steps on how to deploy DivvyCloud to a Kubernetes cluster.
 
 The below instructions assumes:
  * That you have a valid kube config file and uses the default context
- * Helm is installed and functional
+ * Helm is installed and functional.
+
+### Helm
+    We have included some convience scripts for installing helm into a raw GKE cluster. 
+     If your cluster already has helm installed, you  only need to install the helm cli on your computer. For instructions please see the [Helm github](https://github.com/helm/helm)
+
+
+## Installing DivvyCloud
 
 ### Values file
 

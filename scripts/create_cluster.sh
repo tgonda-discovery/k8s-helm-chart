@@ -17,3 +17,10 @@ gcloud container clusters get-credentials "$CLUSTER_NAME" --zone "$ZONE"
 # More info: https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control
 kubectl create clusterrolebinding cluster-admin-binding \
   --clusterrole cluster-admin --user $(gcloud config get-value account)
+
+
+
+
+
+
+
