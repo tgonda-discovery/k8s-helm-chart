@@ -22,6 +22,7 @@ The below instructions assumes:
 
 ### Helm
 We have included some convience scripts for installing helm into a raw GKE cluster. 
+
 If your cluster already has helm installed, you  only need to install the helm cli on your computer. 
 
 For instructions please see the [Helm github](https://github.com/helm/helm)
