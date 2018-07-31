@@ -5,7 +5,7 @@ DivvyCloud enforces security, compliance, and governance policy in your cloud an
 
 Below you will find steps on how to deploy DivvyCloud to a Kubernetes cluster. 
 
-# Installation
+# Before you start
 
 ## Tool dependencies
 
@@ -28,7 +28,15 @@ If your cluster already has helm installed, you  only need to install the helm c
 For instructions please see the [Helm github](https://github.com/helm/helm)
 
 
-## Installing DivvyCloud
+# Quick Start
+Once helm is installed , simply run:
+
+```
+make crd/install
+make app/install 
+```
+
+# Installing DivvyCloud
 
 ### Values file
 
@@ -72,7 +80,7 @@ For instructions please see the [Helm github](https://github.com/helm/helm)
   This helm chart uses the k8s Application resource type. 
   *Please ensure you run the make crd/install prior to installing DivvyCloud*
 
-### Building and installing 
+### Installing 
 	Clone down this repository and use the following make commands:
 
 	* make crd/install to install the application CRD on the cluster. This needs to be done only once.
