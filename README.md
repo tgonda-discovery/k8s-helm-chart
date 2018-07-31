@@ -99,9 +99,9 @@ Next open http://localhost:8001/ in your web browser
   ```
   
 
-## Backup / Restore
+## Backup / Restore of internal MySQL
 
-MySQL dump and the MySQL client are used to backlup and restore a DivvyCloud database
+MySQL dump and the MySQL client are used to backlup and restore a DivvyCloud database.
 First you need to get the IP address of the mysql service in your k8s deployment 
 
 ```
@@ -130,9 +130,4 @@ To restore a database:
 mysql -u [MYSQL_USER] -p -h [MYSQL_IP] divvy < divvy.sql
 mysql -u [MYSQL_USER] -p -h [MYSQL_IP] divvykeys < divvykeys.sql
 ```
-
-## Upgrades
-
- Simply restart all containers , the latest image will pull automatically. Upgrade of database occures on boot.
- Please backup your database prior to upgrading
 
