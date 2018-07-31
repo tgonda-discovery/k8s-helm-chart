@@ -48,14 +48,14 @@ make app/install
   The containerized version of MySQL is an ephemeral version and *WILL LOOSE ALL DATA* if restated. 
 
 #### Setting up external database
-  For more information on this topic please see our [Docs](http://docs.divvycloud.com/latest/installation/legacy.html)
-  
-  DivvyCloud will look for and use two database schemas: 
+For more information on this topic please see our [Docs](http://docs.divvycloud.com/latest/installation/legacy.html)
 
-    - divvy
-    - divvykeys
+DivvyCloud will look for and use two database schemas: 
 
-  After these two schemas are created you will need to create and grant privileges to a MySQL user. Please see our [documentation](http://docs.divvycloud.com/latest/installation/legacy.html) for more information on how to create the proper database schemas and users
+- divvy
+- divvykeys
+
+After these two schemas are created you will need to create and grant privileges to a MySQL user. Please see our [documentation](http://docs.divvycloud.com/latest/installation/legacy.html) for more information on how to create the proper database schemas and users
 
 #### Updating the Values.conf file 
 
