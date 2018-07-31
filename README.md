@@ -29,8 +29,19 @@ For instructions please see the [Helm github](https://github.com/helm/helm)
 
 
 # Quick Start
-Once helm is installed , simply run:
 
+Create GKE Cluster
+```
+sh scripts/create_cluster.sh
+```
+
+Install helm
+```
+brew install helm
+sh scripts/install_helm.sh
+```
+
+Install DivvyCloud
 ```
 make crd/install
 make app/install 
