@@ -1,4 +1,3 @@
-
 # Overview
 
 DivvyCloud enforces security, compliance, and governance policy in your cloud and container based infrastructure.
