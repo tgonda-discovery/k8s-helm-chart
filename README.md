@@ -29,24 +29,24 @@ For instructions please see the [Helm github](https://github.com/helm/helm)
 
 # Quick Start
 
-Create GKE Cluster
+## Create GKE Cluster
+
+If you do not have a cluster already, you can create one in GKE using our script
+
 ```
 sh scripts/create_cluster.sh
 ```
 
-Install helm
+## Install helm
+
+In order to install DivvyCloud, helm must be installed on the cluster and on your machine. 
+
 ```
 brew install helm
 sh scripts/install_helm.sh
 ```
 
-Install DivvyCloud
-```
-make crd/install
-make app/install 
-```
-
-# Installing DivvyCloud
+# Configuration 
 
 ### Values file
 
@@ -55,7 +55,7 @@ make app/install
 
 ### Using External Database
   By default this deployment will use a contanerized version of MySQL and Redis. This is good for kicking the tires. 
-  The containerized version of MySQL is an ephemeral version and *WILL LOOSE ALL DATA* if restated. 
+  The containerized version of MySQL is an ephemeral version and *WILL LOOSE ALL DATA* if restarted. 
 
 #### Setting up external database
 For more information on this topic please see our [Docs](http://docs.divvycloud.com/latest/installation/legacy.html)
@@ -87,9 +87,17 @@ To configure an external Redis system, please edit the Values.yaml file and unco
 
 - redis_host
 
-## Installation 
+# Installation 
 
-### Important note
+Once you have modified the values.yml (optional), you can install DivvyCloud by running two commands:
+
+```
+make crd/install
+make app/install 
+```
+
+## Important note
+
 This helm chart uses the k8s Application resource type. 
 *Please ensure you run the make crd/install prior to installing DivvyCloud*
 
