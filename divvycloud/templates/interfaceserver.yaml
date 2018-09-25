@@ -7,15 +7,18 @@ metadata:
     chart: {{ template "divvycloud.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ template "divvycloud.name" . }}
+  {{ if  and (eq .Values.service.type "LoadBalancer") (.Values.service.internal) }}
+  annotations:
+    cloud.google.com/load-balancer-type: "Internal"
+  {{ end }}
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.interfaceserver_port | default "8001" }}
   selector:
     app: {{ template "divvycloud.name" . }}-interfaceserver
     release: {{ .Release.Name }}
-
-
 
 ---
 apiVersion: apps/v1beta2

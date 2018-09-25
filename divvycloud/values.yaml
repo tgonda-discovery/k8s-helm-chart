@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 image:
     imageName: divvycloud/divvycloud
-    tag: v18.4.21
-    pullPolicy: IfNotPresent
+    tag: latest
+    pullPolicy: Always
 
 replicaCounts:
   harvesters: 2
@@ -25,7 +25,7 @@ replicaCounts:
 # REDIS CONFIG #
 # Uncomment this to use an external redis queue.
 
-#redis_host: dns.name.to.redis.host
+redis_host: 10.142.0.10
 
 # END OF REDIS CONFIG #
 
@@ -34,12 +34,12 @@ replicaCounts:
 # Uncomment this section if you want to use an exteranl database.
 # Please ensure that both divvy and divvykeys shecmas exist and 
 # that the user has permissions on both schemas
-#database_host: dns.name.to.mysql.host
-#database_port: 3306
+database_host: 10.142.0.10
+database_port: 3306
 
 # If you are using an external DB , please update the username and passwords
 database_user: divvy
-database_password: divvy123
+database_password: divvy
 
 # END OF DATABASE CONFIG #
 
@@ -56,9 +56,12 @@ ingress:
 #     kubernetes.aio/tls-acme: "true"
 #     }
 
-
 service:
-  type: ClusterIP
+  # GKE ONLY : If internal is True, your helm chart will ensure that GKE uses an only internally accessible GCP load balancer
+  # Otherwise an externally facing GCP Load balancer will be created 
+  # If you prefer no load balancer, simply change the type to ClusterIP 
+  type: LoadBalancer
+  internal: true
   port: 80
 
 nodeSelector: {}

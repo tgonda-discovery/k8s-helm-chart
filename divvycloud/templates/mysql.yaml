@@ -8,6 +8,7 @@ metadata:
   name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
   labels:
     app: mysql
+    app.kubernetes.io/name: {{ template "divvycloud.name" . }}
 spec:
   accessModes:
   - ReadWriteOnce
@@ -28,7 +29,7 @@ metadata:
     heritage: {{ .Release.Service }}
     app.kubernetes.io/name: {{ template "divvycloud.name" . }}
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   ports:
     - port: 3306
       protocol: TCP
