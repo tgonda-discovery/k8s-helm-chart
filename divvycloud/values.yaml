@@ -25,7 +25,7 @@ replicaCounts:
 # REDIS CONFIG #
 # Uncomment this to use an external redis queue.
 
-redis_host: 10.142.0.10
+#  redis_host: your_redis_ip_or_hostname
 
 # END OF REDIS CONFIG #
 
@@ -34,8 +34,8 @@ redis_host: 10.142.0.10
 # Uncomment this section if you want to use an exteranl database.
 # Please ensure that both divvy and divvykeys shecmas exist and 
 # that the user has permissions on both schemas
-database_host: 10.142.0.10
-database_port: 3306
+#database_host: your_db_hostname_or_ip
+#database_port: 3306
 
 # If you are using an external DB , please update the username and passwords
 database_user: divvy
