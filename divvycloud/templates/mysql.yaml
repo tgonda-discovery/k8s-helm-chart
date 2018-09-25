@@ -1,22 +1,20 @@
 
-{{- if .Values.database_host -}} 
-{{- else -}}
-{{ if .Values.storage }} 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
-  labels:
-    app: mysql
-    app.kubernetes.io/name: {{ template "divvycloud.name" . }}
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: {{ .Values.storage.size | default "30Gi" }}
-{{ end  }}
-
+{{- if .Values.externalDb -}}
+  {{ if .Values.pvcEnabled }}
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
+    labels:
+      app: mysql
+      app.kubernetes.io/name: {{ template "divvycloud.name" . }}
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: {{ .Values.storageSize | default "30Gi" }}
+  {{ end  }}
 ---
 apiVersion: v1
 kind: Service
@@ -64,7 +62,7 @@ spec:
               name: {{ template "divvycloud.name" . }}-secret           
         ports:
         - containerPort: 3306
-    {{ if .Values.storage }}
+    {{ if .Values.pvcEnabled }}
         volumeMounts:
         - name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
           mountPath: /var/lib/mysql

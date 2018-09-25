@@ -1,47 +1,31 @@
 # Default values for divvycloud.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-image:
-    imageName: divvycloud/divvycloud
-    tag: latest
-    pullPolicy: Always
-
-replicaCounts:
-  harvesters: 2
-  interfaceservers: 2
-  schedulers: 2
-  processors: 2
-  longharvesters: 2
-  ondemands: 2
-
-
-# STORAGE #
-# Uncomment this section if you plan on using PVC.
-# We will use your default PVC class.
-#storage:
-#  size: 30Gi
-
-
-# REDIS CONFIG #
-# Uncomment this to use an external redis queue.
-
-#  redis_host: your_redis_ip_or_hostname
-
-# END OF REDIS CONFIG #
+imageName: divvycloud/divvycloud:latest
+imagePullPolicy: Always
 
 # DATABASE CONFIG #
 
 # Uncomment this section if you want to use an exteranl database.
 # Please ensure that both divvy and divvykeys shecmas exist and 
 # that the user has permissions on both schemas
-#database_host: your_db_hostname_or_ip
-#database_port: 3306
 
-# If you are using an external DB , please update the username and passwords
-database_user: divvy
-database_password: divvy
+externalDb: False
+databaseHost: mysql
+databasePort: 3306
+databaseUser: divvy
+databasePassword: divvy
+
+# STORAGE #
+#  We will use a PVC for the MySQL db.
+#  If your kubernetes cluster does not support PVC, please change pvcEnabled to false
+pvcEnabled: true
+storageSize: 30Gi
 
 # END OF DATABASE CONFIG #
+
+
+## INGRESS
 
 ## Comment the below section if you want to run without an ingress rule
 #
@@ -56,16 +40,17 @@ ingress:
 #     kubernetes.aio/tls-acme: "true"
 #     }
 
-service:
-  # GKE ONLY : If internal is True, your helm chart will ensure that GKE uses an only internally accessible GCP load balancer
-  # Otherwise an externally facing GCP Load balancer will be created 
-  # If you prefer no load balancer, simply change the type to ClusterIP 
-  type: LoadBalancer
-  internal: true
-  port: 80
+# END OF INGRESS #
 
-nodeSelector: {}
+# Use a GCP Internal Loadbalancer
+internalLoadBalancer: true
 
-tolerations: []
+# DivvyCloud starting scale
+replicaCounts:
+  harvesters: 2
+  interfaceservers: 2
+  schedulers: 2
+  processors: 2
+  longharvesters: 2
+  ondemands: 2
 
-affinity: {}

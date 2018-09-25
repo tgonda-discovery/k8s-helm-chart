@@ -8,12 +8,12 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     app.kubernetes.io/name: {{ template "divvycloud.name" . }}
-  {{ if  and (eq .Values.service.type "LoadBalancer") (.Values.service.internal) }}
+  {{ if .Values.internalLoadBalancer }}
   annotations:
     cloud.google.com/load-balancer-type: "Internal"
   {{ end }}
 spec:
-  type: {{ .Values.service.type }}
+  type:  LoadBalancer
   ports:
     - port: {{ .Values.interfaceserver_port | default "8001" }}
   selector:
@@ -44,8 +44,8 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.image.imageName }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.pullPolicy }}
+          image: {{ .Values.imageName }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
           args: ['divvyinterfaceserver','-n']
           livenessProbe:
             httpGet:
