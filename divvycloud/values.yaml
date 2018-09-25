@@ -43,7 +43,7 @@ ingress:
 # END OF INGRESS #
 
 # Use a GCP Internal Loadbalancer
-internalLoadBalancer: true
+internalLoadBalancer: false
 
 # DivvyCloud starting scale
 replicaCounts:
