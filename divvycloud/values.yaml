@@ -10,9 +10,29 @@ imagePullPolicy: Always
 # Please ensure that both divvy and divvykeys shecmas exist and 
 # that the user has permissions on both schemas
 
-externalDb: False
-databaseHost: mysql
-databasePort: 3306
+useExternalDb: false
+# If you would like to use an CloudSQLProxy for GKE please provide the CloudSQLInstanceName and
+# the kubernetes secret name for the service account creds
+# IMPORTANT : You may either provide a cloudSQLInstanceName or databaseHost , but not both
+# If you supply both - things will not work properly
+
+# Use GKE
+
+# CloudSQLProxy will also look for a secret called cloudsql-db-credentials
+#cloudSQLInstanceName: divvycloud-engineering:us-east1:divvycloud-cluster-1-sql
+#cloudsqlInstanceCredentials: cloudsql-instance-credentials
+
+##OR
+
+# Native MySQL
+#databaseHost: 10.128.0.7
+
+
+
+# If you are not using CloudSQL, please provide the hostname/IP address for the remote MySQL
+databasePort: "3306"
+
+# Please provide the username and password
 databaseUser: divvy
 databasePassword: divvy
 
@@ -43,7 +63,7 @@ ingress:
 # END OF INGRESS #
 
 # Use a GCP Internal Loadbalancer
-internalLoadBalancer: false
+internalLoadBalancer: true
 
 # DivvyCloud starting scale
 replicaCounts:

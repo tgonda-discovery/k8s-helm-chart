@@ -1,39 +1,22 @@
 
-{{- if .Values.externalDb -}}
-  {{ if .Values.pvcEnabled }}
-  apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
-    labels:
-      app: mysql
-      app.kubernetes.io/name: {{ template "divvycloud.name" . }}
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: {{ .Values.storageSize | default "30Gi" }}
-  {{ end  }}
+{{ if .Values.pvcEnabled }}
 ---
 apiVersion: v1
-kind: Service
+kind: PersistentVolumeClaim
 metadata:
-  name: {{ template "divvycloud.name" . }}-mysql
+  name: divvycloud-mysql-pvc
   labels:
-    app: {{ template "divvycloud.name" . }}-mysql
-    chart: {{ template "divvycloud.chart" . }}-mysql
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app: mysql
     app.kubernetes.io/name: {{ template "divvycloud.name" . }}
 spec:
-  type: ClusterIP
-  ports:
-    - port: 3306
-      protocol: TCP
-  selector:
-    app: {{ template "divvycloud.name" . }}-mysql
-    release: {{ .Release.Name }}
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.storageSize | default "30Gi" }}
+{{ end  }}
+
+{{ if eq .Values.useExternalDb false }}
 ---
 apiVersion: apps/v1beta2
 kind: Deployment
@@ -64,14 +47,10 @@ spec:
         - containerPort: 3306
     {{ if .Values.pvcEnabled }}
         volumeMounts:
-        - name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
+        - name: divvycloud-mysql-pvc
           mountPath: /var/lib/mysql
           subPath: data
       volumes: 
-      - name: {{ .Values.storage.name | default "divvycloud-mysql-pvc" }}
+      - name: divvycloud-mysql-pvc
     {{ end }}
-
-{{- end -}}
-
-
-
+{{ end }}

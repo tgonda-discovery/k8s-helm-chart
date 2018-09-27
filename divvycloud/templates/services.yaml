@@ -1,0 +1,79 @@
+# Service for MySQL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "divvycloud.name" . }}-mysql
+  labels:
+    app: {{ template "divvycloud.name" . }}-mysql
+    chart: {{ template "divvycloud.chart" . }}-mysql
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ template "divvycloud.name" . }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
+      protocol: TCP
+
+  {{ if  (.Values.cloudSQLInstanceName )}}
+  selector:
+    app: {{ template "divvycloud.name" . }}-mysql-proxy
+    release: {{ .Release.Name }}
+  {{ end }}
+
+  # If we are not using an external at all, then we want to create an internal one and route traffic to it
+  {{ if (eq .Values.useExternalDb  false) }}
+  selector:
+      app: {{ template "divvycloud.name" . }}-mysql
+      release: {{ .Release.Name }}
+  {{ end }}
+
+  # The last option is that we are using an externalDb but it is not CloudSQL. In this case we don't want to use a selector
+  # In this case we will use the endpoints.yaml to create an endpoint to bind to the remote Db  in question
+
+
+# Service for InterfaceServer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "divvycloud.name" . }}-interfaceserver
+  labels:
+    app: {{ template "divvycloud.name" . }}-interfaceserver
+    chart: {{ template "divvycloud.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ template "divvycloud.name" . }}
+  {{ if .Values.internalLoadBalancer }}
+  annotations:
+    cloud.google.com/load-balancer-type: "Internal"
+  {{ end }}
+spec:
+  type:  LoadBalancer
+  ports:
+    - port: {{ .Values.interfaceserver_port | default "8001" }}
+  selector:
+    app: {{ template "divvycloud.name" . }}-interfaceserver
+    release: {{ .Release.Name }}
+
+# Service for Redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "divvycloud.name" . }}-redis
+  labels:
+    app: {{ template "divvycloud.name" . }}-redis
+    chart: {{ template "divvycloud.chart" . }}-redis
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ template "divvycloud.name" . }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      protocol: TCP
+  selector:
+    app: {{ template "divvycloud.name" . }}-redis
+    release: {{ .Release.Name }}

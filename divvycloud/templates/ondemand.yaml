@@ -27,18 +27,18 @@ spec:
           args: ['divvycloudworker','-t','on-demand','-n']
           envFrom:
             - secretRef:
-                name: {{ template "divvycloud.name" . }}-secret 
+                name: {{ template "divvycloud.name" . }}-secret
           resources:
-{{ toYaml .Values.resources | indent 12 }}
+  {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
       nodeSelector:
-{{ toYaml . | indent 8 }}
+  {{ toYaml . | indent 8 }}
     {{- end }}
     {{- with .Values.affinity }}
       affinity:
-{{ toYaml . | indent 8 }}
+  {{ toYaml . | indent 8 }}
     {{- end }}
     {{- with .Values.tolerations }}
       tolerations:
-{{ toYaml . | indent 8 }}
+  {{ toYaml . | indent 8 }}
     {{- end }}

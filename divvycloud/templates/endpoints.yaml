@@ -1,0 +1,15 @@
+# End point for MySQL Service
+# This endpoint is only created if the user
+# is using an external Db
+---
+{{ if .Values.databaseHost }}
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: {{ template "divvycloud.name" . }}-mysql
+subsets:
+  - addresses:
+      - ip: {{ .Values.databaseHost }}
+    ports:
+      - port: {{ .Values.databasePort | default "3306" }}
+{{ end }}

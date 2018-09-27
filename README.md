@@ -52,9 +52,14 @@ sh scripts/install_helm.sh
 
   The values.yaml file located in the divvycloud/ directory allows you to configure your deployment.
   Please see the comments in the values.yaml for further documentation. 
+  
+  Below are the available configuration options:
+  
+  
+  
 
 ### Using External Database
-  By default this deployment will use a contanerized version of MySQL and Redis. This is good for kicking the tires. 
+  By default this deployment will use a contanerized version of MySQL and Redis. This is good for kicking the tires, however is not recommended for production environments. 
   The containerized version of MySQL is an ephemeral version and *WILL LOOSE ALL DATA* if restarted. 
 
 #### Setting up external database

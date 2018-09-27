@@ -12,7 +12,7 @@ metadata:
 spec:
   descriptor:
     type: DivvyCloud
-    version: {{ .Values.image.tag }}
+    version: {{ .Values.imageTag }}
     description: |-
     
       DivvyCloud is a compliance and security reporting and enforcement engine for cloud and container infrastructure
