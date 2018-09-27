@@ -30,6 +30,17 @@ spec:
             - secretRef:
                 name: {{ template "divvycloud.name" . }}-secret 
           resources:
+      {{if .Values.enablePlugins eq true}}
+          volumeMounts:
+            - name: plugins
+              mountPath: /plugins/
+      volumes:
+        - name: plugins
+          configMap:
+            name: divvycloud-plugins
+      {{ end }}
+
+
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
       nodeSelector:

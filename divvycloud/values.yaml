@@ -27,7 +27,6 @@ useExternalDb: false
 #databaseHost: 10.128.0.7
 
 
-
 # If you are not using CloudSQL, please provide the hostname/IP address for the remote MySQL
 databasePort: "3306"
 
@@ -60,6 +59,9 @@ ingress:
 #     }
 
 # END OF INGRESS #
+
+# Plugins
+enablePlugins: true
 
 # Use a GCP Internal Loadbalancer
 internalLoadBalancer: true
