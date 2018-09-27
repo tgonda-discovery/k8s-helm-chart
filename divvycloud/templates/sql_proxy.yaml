@@ -1,0 +1,44 @@
+
+{{ if .Values.cloudSQLInstanceName }}
+{{- $instances := (printf "\"-instances=%s=tcp:0.0.0.0:3306\""  (.Values.cloudSQLInstanceName)) -}}
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "divvycloud.name" . }}-mysql-proxy
+  labels:
+    app: {{ template "divvycloud.name" . }}-mysql-proxy
+    chart: {{ template "divvycloud.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ template "divvycloud.name" . }}
+
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "divvycloud.name" . }}-mysql-proxy
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "divvycloud.name" . }}-mysql-proxy
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  {{$instances}},
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        securityContext:
+          runAsUser: 2  # non-root user
+          allowPrivilegeEscalation: false
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: {{ .Values.cloudsqlInstanceCredentials }}
+
+{{ end }}
