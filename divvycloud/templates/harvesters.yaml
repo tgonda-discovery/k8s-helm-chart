@@ -29,28 +29,20 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ template "divvycloud.name" . }}-secret 
-          resources:
-      {{if .Values.enablePlugins eq true}}
+          {{ if .Values.enablePlugins }}
           volumeMounts:
-            - name: plugins
-              mountPath: /plugins/
-      volumes:
-        - name: plugins
-          configMap:
-            name: divvycloud-plugins
+          - name: plugins
+            mountPath: /plugins/
+            readOnly: true
+          {{ end }}
+      {{if .Vales.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecret }}
       {{ end }}
 
-
-{{ toYaml .Values.resources | indent 12 }}
-    {{- with .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+      {{ if .Values.enablePlugins }}
+      volumes:
+      - name: plugins
+        configMap:
+            name: {{ template "divvycloud.name" . }}-plugins
+      {{ end }}
