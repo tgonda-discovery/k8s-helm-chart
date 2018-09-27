@@ -48,49 +48,65 @@ sh scripts/install_helm.sh
 
 # Configuration 
 
-### Values file
+## Values file
 
-  The values.yaml file located in the divvycloud/ directory allows you to configure your deployment.
-  Please see the comments in the values.yaml for further documentation. 
+The values file has many configuration options. Please refer to the comments in the values.yaml file for further documentation.
   
-  Below are the available configuration options:
-  
-  
-  
-
 ### Using External Database
-  By default this deployment will use a contanerized version of MySQL and Redis. This is good for kicking the tires, however is not recommended for production environments. 
-  The containerized version of MySQL is an ephemeral version and *WILL LOOSE ALL DATA* if restarted. 
 
-#### Setting up external database
-For more information on this topic please see our [Docs](http://docs.divvycloud.com/latest/installation/legacy.html)
+The values.yaml file located in the divvycloud/ directory allows you to configure your deployment.
+By default this deployment will use a contanerized version of MySQL and Redis. This is good for kicking the tires, however is not recommended for production environments. 
+The containerized version of MySQL is an ephemeral version and *WILL LOOSE ALL DATA* if restarted. 
+  
 
+#### Setup DB
 DivvyCloud will look for and use two database schemas: 
 
 - divvy
 - divvykeys
 
-After these two schemas are created you will need to create and grant privileges to a MySQL user. Please see our [documentation](http://docs.divvycloud.com/latest/installation/legacy.html) for more information on how to create the proper database schemas and users
+After these two schemas are created you will need to create and grant privileges to a MySQL user. 
+For more information on this topic please see our [Docs](http://docs.divvycloud.com/latest/installation/legacy.html)
 
-#### Updating the Values.conf file 
+#### Enable External Db support
+  To enable External Database support, you will need to update the values.yaml and set the useExternalDb to true
+  
+  ```
+  useExternalDb: true
+  ```  
 
-To configure an external MySQL environment, please edit the Values.yaml file and uncommend/update the following values:
+*IMORTANT NOTE: In the next steps you can uncomment either databaseHost or cloudSQLInstanceName , but not both. If you uncomment both the deployment will fail.*
 
-- database_host
-- database_port
-- database_user
-- database_password 
+##### Google CloudSQL
 
-### Using External Redis
+To use Google Cloud SQL, you will want to uncomment and update the following option in the values.yaml.
 
-DivvyCloud can perform reasonably well using just the internal Redis container. However, for production environments we highly recommend 
-using an external redis system. 
+The CloudSQLInstanceName can be found on the database information page for the CloudSQL Instance you are using. Once you have the, update the values.yaml:
 
-#### Setting up external Redis 
+```
+cloudSQLInstanceName: [Your_CloudSQLInstanceName_]
+```
 
-To configure an external Redis system, please edit the Values.yaml file and uncommend/update the following values:
+Next we need to create a GCP Service Account that has access to GoogleCloudSQL. Please follow steps *1-5.1* from the following instructions:
 
-- redis_host
+*There is no need to perform step 5.2  (cloudsql-db-credentials) , as we will use variables below to set username and password.*
+
+[Google CloudSQL Documentation] (https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine)
+
+#### Using Other MySQL instance (RDS / Native / etc..)
+
+To use a standard MySQL instance or RDS, uncomment databaseHost in the values.yaml
+```yaml
+databaseHost: [IP_OR_HOSTNAME_OF_MYSQL_SERVER]
+```
+
+#### Database Username and password
+
+Finally we need to update the database username and password values in the values.yaml
+```yaml
+databaseUser: [insert_username_here]
+databasePassword: [insert_password_here]
+```
 
 # Installation 
 
