@@ -62,12 +62,14 @@ spec:
 
 
   info:
+  {{ if eq .Values.enablePlugins true }}
   - name: MySQL root password
     type: Reference
     valueFrom:
       secretKeyRef:
         key: MYSQL_ROOT_PASSWORD
-        name: {{ template "divvycloud.name" . }}-secret 
+        name: {{ template "divvycloud.name" . }}-secret
+  {{ end }}
   - name: DivvyCloud MySQL user name
     type: Reference
     valueFrom:

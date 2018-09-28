@@ -24,21 +24,31 @@ spec:
         - name: {{ .Chart.Name }}
           image: {{ .Values.imageName }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
+          {{ if eq .Values.enablePlugins true }}
+          command: ['sh','/scripts/entrypoint.sh']
+          {{ end }}
           args: ['divvycloudworker','-t','processor','-n']
           envFrom:
             - secretRef:
-                name: {{ template "divvycloud.name" . }}-secret           
-          resources:
-{{ toYaml .Values.resources | indent 12 }}
-    {{- with .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+                name: {{ template "divvycloud.name" . }}-secret
+          volumeMounts:
+          - name: entrypoint
+            mountPath: /scripts/
+         {{if eq .Values.enablePlugins true }}
+          - name: plugins
+            mountPath: /tmpPlugins/
+            readOnly: true
+          {{ end }}
+      {{ if .Values.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecret }}
+      {{ end }}
+      volumes:
+      {{ if eq .Values.enablePlugins true }}
+      - name: plugins
+        secret:
+            secretName: divvycloud-plugins
+      {{ end }}
+      - name: entrypoint
+        secret:
+            secretName: {{ template "divvycloud.name" . }}-entrypoint
