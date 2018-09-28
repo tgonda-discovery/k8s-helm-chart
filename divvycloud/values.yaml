@@ -61,7 +61,7 @@ ingress:
 # END OF INGRESS #
 
 # Plugins
-enablePlugins: true
+enablePlugins: false
 
 # Use a GCP Internal Loadbalancer
 internalLoadBalancer: true

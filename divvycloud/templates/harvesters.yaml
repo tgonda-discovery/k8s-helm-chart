@@ -25,26 +25,31 @@ spec:
         - name: {{ .Chart.Name }}
           image: {{ .Values.imageName }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
-          {{ if .Values.enablePlugins }}
-          command: ['unzip','/tmpPlugins/plugins.zip','/plugins/',';']
-          {{ end }}
+          {{if eq .Values.enablePlugins true}}
+          command: ['sh','/scripts/entrypoint.sh']
+          {{end}}
           args: ['divvycloudworker','-t','harvester','-n']
           envFrom:
             - secretRef:
                 name: {{ template "divvycloud.name" . }}-secret 
-          {{ if .Values.enablePlugins }}
           volumeMounts:
+          {{- if eq .Values.enablePlugins true -}}
           - name: plugins
             mountPath: /tmpPlugins/
             readOnly: true
-          {{ end }}
-      {{if .Vales.imagePullSecret }}
+          {{end}}
+          - name: entrypoint
+            mountPath: /scripts/
+      {{if .Values.imagePullSecret}}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecret }}
-      {{ end }}
-      {{ if .Values.enablePlugins }}
+      {{end}}
       volumes:
+      {{if eq .Values.enablePlugins true}}
       - name: plugins
         secret:
             secretName: divvycloud-plugins
-      {{ end }}
+      {{end}}
+      - name: entrypoint
+        secret:
+            secretName: {{ template "divvycloud.name" . }}-entrypoint

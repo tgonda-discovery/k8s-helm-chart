@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ template "divvycloud.name" . }}-entrypoint
+  labels:
+    app.kubernetes.io/name: {{ template "divvycloud.name" . }}
+data:
+  entrypoint.sh: {{ .Files.Get "scripts/entrypoint.sh" | b64enc }}

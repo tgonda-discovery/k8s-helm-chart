@@ -23,6 +23,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: {{ .Values.imageName }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
+          {{ if eq .Values.enablePlugins true }}
+          command: ['sh','/scripts/entrypoint.sh']
+          {{ end }}
           args: ['divvyinterfaceserver','-n']
           livenessProbe:
             httpGet:
@@ -39,19 +42,24 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ template "divvycloud.name" . }}-secret 
-          {{ if .Values.enablePlugins }}
           volumeMounts:
+          - name: entrypoint
+            mountPath: /scripts/
+          {{ if eq .Values.enablePlugins true }}
           - name: plugins
-            mountPath: /plugins/
+            mountPath: /tmpPlugins/
             readOnly: true
           {{ end }}
-      {{if .Vales.imagePullSecret }}
+      {{ if .Values.imagePullSecret }}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecret }}
       {{ end }}
-      {{ if .Values.enablePlugins }}
       volumes:
+      {{ if eq .Values.enablePlugins true }}
       - name: plugins
-        configMap:
-            name: {{ template "divvycloud.name" . }}-plugins
+        secret:
+            secretName: divvycloud-plugins
       {{ end }}
+      - name: entrypoint
+        secret:
+            secretName: {{ template "divvycloud.name" . }}-entrypoint

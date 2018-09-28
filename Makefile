@@ -20,5 +20,6 @@ app/upgrade:
 .PHONY: create/plugins
 create/plugins:
 	mkdir -p .build/plugins/
-	zip .build/plugins/plugins.zip plugins/*
+	( cd plugins/ && zip -r ../.build/plugins/plugins.zip *)
+	- kubectl delete secret divvycloud-plugins
 	kubectl create secret generic divvycloud-plugins --from-file=.build/plugins/plugins.zip
