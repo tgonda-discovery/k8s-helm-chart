@@ -5,15 +5,6 @@ import logging
 from flask import request
 import time
 from DivvyApp.DivvyApp import DivvyApp
-from DivvyPlugins.settings import GlobalSetting
-
-INFLUXDB_HOST = GlobalSetting(
-    name="influxdb.host",
-    display_name='URL to Image Listing',
-    type_hint='string',
-    description='URL to fetch the image whitelist listing'
-)
-
 import os
 
 
