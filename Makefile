@@ -1,5 +1,7 @@
 APP_NAME ?= divvycloud
 
+plugins:: plugins/uninstall plugins/install 
+
 .PHONY: crd/install
 crd/install:
 	kubectl create -f crd/app-crd.yaml
@@ -12,13 +14,21 @@ app/install:
 app/uninstall:
 	helm delete $(APP_NAME) --purge
 
-.PHONE: app/upgrade
+.PHONY: app/upgrade
 app/upgrade:
 	helm upgrade $(APP_NAME) divvycloud
 
+.PHONY: app/restart
+app/restart:
+	kubectl get deployment | grep -i divvycloud | grep -v mysq | grep -v redis | cut -d ' ' -f1 | xargs kubectl scale deployment --replicas=0
+	kubectl get deployment | grep -i divvycloud | grep -v mysq | grep -v redis | cut -d ' ' -f1 | xargs kubectl scale deployment --replicas=2
 
-.PHONY: create/plugins
-create/plugins:
+.PHONY: plugins/uninstall
+plugins/uninstall:
+	- kubectl delete secret divvycloud-plugins
+
+.PHONY: plugins/install
+plugins/install:
 	mkdir -p .build/plugins/
 	- ( cd plugins/ && zip -r ../.build/plugins/plugins.zip *)
 	- kubectl delete secret divvycloud-plugins

@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 imageName: divvycloud/divvycloud:latest
 imagePullPolicy: Always
+imageTag: 18
 
 # DATABASE CONFIG #
 
@@ -61,7 +62,7 @@ ingress:
 # END OF INGRESS #
 
 # Plugins
-enablePlugins: false
+enablePlugins: true
 
 # Use a GCP Internal Loadbalancer
 internalLoadBalancer: true

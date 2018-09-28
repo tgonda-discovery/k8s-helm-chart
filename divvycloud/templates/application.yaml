@@ -12,7 +12,6 @@ metadata:
 spec:
   descriptor:
     type: DivvyCloud
-    version: {{ .Values.imageTag }}
     description: |-
     
       DivvyCloud is a compliance and security reporting and enforcement engine for cloud and container infrastructure
@@ -62,14 +61,12 @@ spec:
 
 
   info:
-  {{ if eq .Values.enablePlugins true }}
   - name: MySQL root password
     type: Reference
     valueFrom:
       secretKeyRef:
         key: MYSQL_ROOT_PASSWORD
         name: {{ template "divvycloud.name" . }}-secret
-  {{ end }}
   - name: DivvyCloud MySQL user name
     type: Reference
     valueFrom:

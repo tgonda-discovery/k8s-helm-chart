@@ -33,7 +33,7 @@ spec:
             - secretRef:
                 name: {{ template "divvycloud.name" . }}-secret 
           volumeMounts:
-          {{- if eq .Values.enablePlugins true -}}
+          {{if eq .Values.enablePlugins true}}
           - name: plugins
             mountPath: /tmpPlugins/
             readOnly: true
