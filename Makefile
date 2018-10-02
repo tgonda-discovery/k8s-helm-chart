@@ -1,4 +1,5 @@
 APP_NAME ?= divvycloud
+NAMESPACE ?= divvycloud
 
 plugins:: plugins/uninstall plugins/install 
 
@@ -8,11 +9,11 @@ crd/install:
 
 .PHONY: app/install
 app/install:
-	helm install --name=$(APP_NAME) divvycloud
+	helm install --name=$(APP_NAME) --namespace ${NAMESPACE} divvycloud
 
 .PHONY: app/uninstall
 app/uninstall:
-	helm delete $(APP_NAME) --purge
+	helm delete $(APP_NAME) --namespace ${NAMESPACE} --purge
 
 .PHONY: app/upgrade
 app/upgrade:

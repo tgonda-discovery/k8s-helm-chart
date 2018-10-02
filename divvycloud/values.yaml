@@ -11,7 +11,7 @@ imageTag: 18
 # Please ensure that both divvy and divvykeys shecmas exist and 
 # that the user has permissions on both schemas
 
-useExternalDb: false
+useExternalDb: true
 # If you would like to use an CloudSQLProxy for GKE please provide the CloudSQLInstanceName and
 # the kubernetes secret name for the service account creds
 # IMPORTANT : You may either provide a cloudSQLInstanceName or databaseHost , but not both

@@ -29,6 +29,9 @@ spec:
         command: ["/cloud_sql_proxy",
                   {{$instances}},
                   "-credential_file=/secrets/cloudsql/credentials.json"]
+        envFrom:
+          - secretRef:
+              name: {{ template "divvycloud.name" . }}-secret 
         securityContext:
           runAsUser: 2  # non-root user
           allowPrivilegeEscalation: false
@@ -39,6 +42,6 @@ spec:
       volumes:
         - name: cloudsql-instance-credentials
           secret:
-            secretName: {{ .Values.cloudsqlInstanceCredentials }}
+            secretName: cloudsql-instance-credentials
 
 {{ end }}
