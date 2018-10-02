@@ -67,6 +67,19 @@ enablePlugins: true
 # Use a GCP Internal Loadbalancer
 internalLoadBalancer: true
 
+# HTTP Proxy
+# This sets http_proxy in the container during runtime
+# httpProxy: http://proxy.acmecorp.com
+#
+# HTTPS Proxy
+# This sets https_proxy in the container during runtime
+# httpsProxy: http://proxy.acmecorp.com
+#
+# No Proxy
+# This sets no_proxy in the container during runtime
+# noProxy: mysql,redis,169.254.169.254
+#
+
 # DivvyCloud starting scale
 replicaCounts:
   harvesters: 2
