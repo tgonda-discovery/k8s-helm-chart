@@ -69,15 +69,16 @@ internalLoadBalancer: true
 
 # HTTP Proxy
 # This sets http_proxy in the container during runtime
-httpProxy: http://proxy.acmecorp.com
+#httpProxy: http://proxy.acmecorp.com
 #
 # HTTPS Proxy
 # This sets https_proxy in the container during runtime
-httpsProxy: http://proxy.acmecorp.com
+#httpsProxy: http://proxy.acmecorp.com
 #
 # No Proxy
-# This sets no_proxy in the container during runtime
-noProxy: divvycloud-mysql,divvycloud-redis,169.254.169.254
+# IMPORTANT: if you are using proxy, please make sure to uncomment no proxy.
+# At the very least divvycloud-mysql and divvycloud-redis need to be set as no_proxy
+#noProxy: divvycloud-mysql,divvycloud-redis,169.254.169.254
 #
 
 # DivvyCloud starting scale
