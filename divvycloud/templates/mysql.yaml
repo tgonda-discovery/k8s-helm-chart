@@ -36,9 +36,12 @@ spec:
         release: {{ .Release.Name }}
     spec:
       containers:
-      - image: divvycloud/quickstart-db
+      - image: {{ .Values.mysqlInstance | default "divvycloud/quickstart-db" }}
         args:
           - "--ignore-db-dir=lost+found --datadir=/var/lib/mysq/data"
+        envFrom:
+          - secretRef:
+              name: {{ template "divvycloud.name" . }}-secret 
         name: {{ template "divvycloud.name" . }}-mysql
         envFrom:
           - secretRef:
