@@ -4,6 +4,7 @@
 imageName: divvycloud/divvycloud:latest
 imagePullPolicy: Always
 imageTag: 18
+#mysqlInstance: path_to_divvycloud_quickstart-db
 
 # DATABASE CONFIG #
 

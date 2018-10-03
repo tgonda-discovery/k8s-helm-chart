@@ -43,9 +43,6 @@ spec:
           - secretRef:
               name: {{ template "divvycloud.name" . }}-secret 
         name: {{ template "divvycloud.name" . }}-mysql
-        envFrom:
-          - secretRef:
-              name: {{ template "divvycloud.name" . }}-secret           
         ports:
         - containerPort: 3306
     {{ if .Values.pvcEnabled }}

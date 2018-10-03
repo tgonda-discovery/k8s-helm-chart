@@ -13,7 +13,7 @@ app/install:
 
 .PHONY: app/uninstall
 app/uninstall:
-	helm delete $(APP_NAME) --namespace ${NAMESPACE} --purge
+	helm delete $(APP_NAME) --purge
 
 .PHONY: app/upgrade
 app/upgrade:
