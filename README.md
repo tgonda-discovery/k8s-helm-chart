@@ -29,29 +29,59 @@ For instructions please see the [Helm github](https://github.com/helm/helm)
 
 # Quick Start
 
-## Create GKE Cluster
-
-If you do not have a cluster already, you can create one in GKE using our script
-
+These commands require helm to be install locally. 
 ```
-sh scripts/create_cluster.sh
+make crd/install
+make app/install 
 ```
 
-## Install helm
 
-In order to install DivvyCloud, helm must be installed on the cluster and on your machine. 
-
-```
-brew install helm
-sh scripts/install_helm.sh
-```
 
 # Configuration 
+## Configuration
 
-## Values file
+The following table lists the configurable parameters of the Redis chart and their default values.
 
-The values file has many configuration options. Please refer to the comments in the values.yaml file for further documentation.
-  
+| Parameter                                  | Description                                                                                                    | Default                                              |
+|--------------------------------------------|----------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
+| `imageName`                     | Image Name | `divvycloud/divvycloud:latest`                                                |
+| `mysqlInstance`                     | Image Name for MySQL db | `nil`                                                |
+| `imagePullPolicy`                           | Image Pull Policy | `Always`                                          |
+| `useExternalDb`                         | Use an external Database | `false`                                      |
+| `cloudSQLInstanceName`                         | GoogleCloudSQL Instance Name. This cannot be used *with* databaseHost                                                                                               | `nil`                                      |
+| `databaseHost`                         | Hostname/IP Address of MySQL Server. This cannot be used *with* cloudSQLInstanceName| `nil`                                      |
+| `databasePort`                         | Database Port. Do not change if using Google CloudSQL | `3306`                                      |
+| `databaseUser`                         | Username that has access to divvy/divvykeys schemas | `divvy`                                      |
+| `databasePassword`                         | Password paired with above  MySQL username| `divvy`                                      |
+| `pvcEnabled`                         | Use PVC storage for MySQL container (Not necessary if using external Db)| `true`                                      |
+| `storageSize`                         | Size of PVC Storage | `30G`                                      |
+| `enablePlugins`                         | Enable plugins| `false`                                      |
+| `internalLoadBalancer`                         | Use GCE Internal load balancer | `true`                                      |
+| `autoIngress`                         | Use auto-ingress (for Nginx Ingress) | `false`                                      |
+| `httpProxy`                         | proxy addresses | `nil`                                      |
+| `httpsProxy`                         | proxy addresses | `nil`                                      |
+| `noProxy`                         | Addresses that will ignore proxy (if set)| `nil`                                      |
+| `replicaCounts.harvesters`                         | Number of harvesters | `2`                                      |
+| `replicaCounts.interfaceservers`                         | Number of interface servers | `2`                                      |
+| `replicaCounts.schedulers`                         | Number of schedules | `2`                                      |
+| `replicaCounts.processors`                         | Number of processors | `2`                                      |
+| `replicaCounts.ondemands`                         | Number of on-demand workers | `2`                                      |
+
+
+# Make Commands 
+
+| Parameter                                  | Description                                                                                                    |
+|--------------------------------------------|----------------------------------------------------------------------------------------------------------------|------------------------------------------------------|
+| `make crd/install`                     | Install Application CRD REQUIRED
+| `make app/install`                     | Install DivvyCloud using tiller
+| `make app/install-notiller`                     | Install DivvyCloud using helm template and deploy with kubectl -f apply  
+| `make app/uninstall`                     | Uninstall DivvyCloud using tiller
+| `make app/uninstall-notiller`                     | Install DivvyCloud using helm template and kubectl 
+| `make app/restart`                     | Restart the DivvyCloud suite
+| `make plugins/install`                     | Upload plugins to kubectl. Place all plugins in ./plugins/ directory prior to running this command. Suite restart is required after deployment. enablePlugins must be true (see above configuration)
+| `make plugins/uninstall`                     | Remove uploaded plugins 
+
+
 ### Using External Database
 
 The values.yaml file located in the divvycloud/ directory allows you to configure your deployment.
@@ -67,15 +97,6 @@ DivvyCloud will look for and use two database schemas:
 
 After these two schemas are created you will need to create and grant privileges to a MySQL user. 
 For more information on this topic please see our [Docs](http://docs.divvycloud.com/latest/installation/legacy.html)
-
-#### Enable External Db support
-  To enable External Database support, you will need to update the values.yaml and set the useExternalDb to true
-  
-  ```
-  useExternalDb: true
-  ```  
-
-*IMORTANT NOTE: In the next steps you can uncomment either databaseHost or cloudSQLInstanceName , but not both. If you uncomment both the deployment will fail.*
 
 ##### Google CloudSQL
 
@@ -93,20 +114,6 @@ Next we need to create a GCP Service Account that has access to GoogleCloudSQL. 
 
 [Google CloudSQL Documentation] (https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine)
 
-#### Using Other MySQL instance (RDS / Native / etc..)
-
-To use a standard MySQL instance or RDS, uncomment databaseHost in the values.yaml
-```yaml
-databaseHost: [IP_OR_HOSTNAME_OF_MYSQL_SERVER]
-```
-
-#### Database Username and password
-
-Finally we need to update the database username and password values in the values.yaml
-```yaml
-databaseUser: [insert_username_here]
-databasePassword: [insert_password_here]
-```
 
 # Installation 
 
@@ -122,13 +129,6 @@ make app/install
 This helm chart uses the k8s Application resource type. 
 *Please ensure you run the make crd/install prior to installing DivvyCloud*
 
-### Installing 
-Clone this repository and use the following make commands:
-
-* make crd/install to install the application CRD on the cluster. This needs to be done only once.
-* make app/install to build all the container images and deploy the app to a target namespace on the cluster.
-* make app/uninstall to delete the deployed app.
-
 ## Connecting to admin console
 
 By default DivvyCloud is only accessible from inside the kube cluster. As a result we must setup a port forward
@@ -137,17 +137,8 @@ By default DivvyCloud is only accessible from inside the kube cluster. As a resu
 kubectl port-forward svc/divvycloud-interfaceserver 8001
 
 ```
-
 Next open http://localhost:8001/ in your web browser
 
-## Upgrading 
-
-  To upgrade simply pull the latest from this repository and then run:
-
-  ```
-  make app/upgrade
-  ```
-  
 
 ## Backup / Restore of internal MySQL
 
