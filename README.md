@@ -40,6 +40,8 @@ make app/install
 # Configuration 
 ## Configuration
 
+**We look for values.yaml in the same directory as the Makefile.**
+
 The following table lists the configurable parameters of the Redis chart and their default values.
 
 | Parameter                                  | Description                                                                                                    | Default                                              |
@@ -48,7 +50,7 @@ The following table lists the configurable parameters of the Redis chart and the
 | `mysqlInstance`                     | Image Name for MySQL db | `nil`                                                |
 | `imagePullPolicy`                           | Image Pull Policy | `Always`                                          |
 | `useExternalDb`                         | Use an external Database | `false`                                      |
-| `cloudSQLInstanceName`                         | GoogleCloudSQL Instance Name. This cannot be used *with* databaseHost                                                                                               | `nil`                                      |
+| `cloudSQLInstanceName`                         | GoogleCloudSQL Instance Name. This cannot be used *with* databaseHost. If using CloudSQLInstance, please follow the directions below for adding a CloudInstnaceCreds json to kubernetes                                                                                               | `nil`                                      |
 | `databaseHost`                         | Hostname/IP Address of MySQL Server. This cannot be used *with* cloudSQLInstanceName| `nil`                                      |
 | `databasePort`                         | Database Port. Do not change if using Google CloudSQL | `3306`                                      |
 | `databaseUser`                         | Username that has access to divvy/divvykeys schemas | `divvy`                                      |
@@ -108,12 +110,18 @@ The CloudSQLInstanceName can be found on the database information page for the C
 cloudSQLInstanceName: [Your_CloudSQLInstanceName_]
 ```
 
-Next we need to create a GCP Service Account that has access to GoogleCloudSQL. Please follow steps *1-5.1* from the following instructions:
+You must also upload a your cloudsql instance credentials (Aka ServiceAccount JSON) to kubernetes. Once a CloudSQLInstance has been provisioned and a service account created, run the following command:
 
-*There is no need to perform step 5.2  (cloudsql-db-credentials) , as we will use variables below to set username and password.*
+```
+kubectl create secret generic cloudsql-instance-credentials --namespace divvycloud\
+    --from-file=credentials.json=[path to json file created for service account]
+```
+
+Information for creating a GCP Service Account that has access to GoogleCloudSQL please read the following instructions. Please follow steps *1-5.1* from the following instructions:
 
 [Google CloudSQL Documentation] (https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine)
 
+*There is no need to perform step 5.2  (cloudsql-db-credentials) , as we will use variables below to set username and password.*
 
 # Installation 
 
@@ -123,11 +131,6 @@ Once you have modified the values.yml (optional), you can install DivvyCloud by 
 make crd/install
 make app/install 
 ```
-
-## Important note
-
-This helm chart uses the k8s Application resource type. 
-*Please ensure you run the make crd/install prior to installing DivvyCloud*
 
 ## Connecting to admin console
 

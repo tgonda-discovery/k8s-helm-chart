@@ -9,8 +9,8 @@ plugins:: plugins/uninstall plugins/install
 crd/install:
 	kubectl create -f crd/app-crd.yaml --namespace ${NAMESPACE}  --validate=false
 
-.PHONY: app/install-nohelm
-app/install-nohelm:
+.PHONY: app/install-notiller
+app/install-notiller:
 	mkdir -p ./build
 	helm template --name=$(APP_NAME) --namespace ${NAMESPACE} -f ${VALUES} divvycloud  > ./build/divvycloud.yaml
 	kubectl apply --namespace ${NAMESPACE} -f ./build/divvycloud.yaml
@@ -19,8 +19,8 @@ app/install-nohelm:
 app/install:
 	helm install --name=$(APP_NAME) --namespace ${NAMESPACE} -f ${VALUES} divvycloud 
 
-.PHONY: app/uninstall-nohelm
-app/uninstall-nohelm:
+.PHONY: app/uninstall-notille
+app/uninstall-notiller:
 	kubectl delete --namespace ${NAMESPACE} -f ./build/divvycloud.yaml
 
 .PHONY: app/uninstall
