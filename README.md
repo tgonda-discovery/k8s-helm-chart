@@ -73,7 +73,7 @@ The following table lists the configurable parameters of the Redis chart and the
 # Make Commands 
 
 | Parameter                                  | Description                                                                                                    
-|--------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+|--------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
 | `make crd/install`                     | Install Application CRD REQUIRED |
 | `make app/install`                     | Install DivvyCloud using tiller |
 | `make app/install-notiller`                     | Install DivvyCloud using helm template and deploy with kubectl -f apply  | 
