@@ -82,7 +82,7 @@ The following table lists the configurable parameters of the Redis chart and the
 | `make app/restart`                     | Restart the DivvyCloud suite |
 | `make plugins/install`                     | Upload plugins to kubectl. Place all plugins in ./plugins/ directory prior to running this command. Suite restart is required after deployment. enablePlugins must be true (see above configuration) |
 | `make plugins/uninstall`                     | Remove uploaded plugins |
-| <img width=200/>                      ||
+| <img width=500/>                      ||
 
 
 ### Using External Database
