@@ -124,6 +124,22 @@ Information for creating a GCP Service Account that has access to GoogleCloudSQL
 
 *There is no need to perform step 5.2  (cloudsql-db-credentials) , as we will use variables below to set username and password.*
 
+## Using Plugins 
+
+To use plugins, simply put your uncompressed plugin into the plugins/ directory. Once that is done , you can use the make command to zip and upload all the plugins to kubernetes.
+
+```
+make plugins/install 
+```
+
+Once this is done, you will need to add enablePlugins to your values.yaml
+```
+enablePlugins: true
+```
+
+After updaing the values.yaml, simply run the make app/install command. If you have already deployed, the install command will simply update the containers in place - no need to delete and re-install. 
+
+
 # Installation 
 
 Once you have modified the values.yml (optional), you can install DivvyCloud by running two commands:
