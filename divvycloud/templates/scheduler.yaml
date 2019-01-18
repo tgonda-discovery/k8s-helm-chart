@@ -27,7 +27,7 @@ spec:
           {{ if eq .Values.enablePlugins true }}
           command: ['sh','/scripts/entrypoint.sh']
           {{ end }}
-          args: ['divvycloudjobscheduler','-n','--do-db-upgrade']
+          args: ['divvycloud', 'scheduler','--db-upgrade']
           envFrom:
             - secretRef:
                 name: {{ template "divvycloud.name" . }}-secret           

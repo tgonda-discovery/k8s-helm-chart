@@ -63,11 +63,9 @@ The following table lists the configurable parameters of the Redis chart and the
 | `httpProxy`                         | proxy addresses | `nil`                                      |
 | `httpsProxy`                         | proxy addresses | `nil`                                      |
 | `noProxy`                         | Addresses that will ignore proxy (if set)| `nil`                                      |
-| `replicaCounts.harvesters`                         | Number of harvesters | `2`                                      |
+| `replicaCounts.workers`                  | Number of workers | `8`                                      |
 | `replicaCounts.interfaceservers`                         | Number of interface servers | `2`                                      |
 | `replicaCounts.schedulers`                         | Number of schedules | `2`                                      |
-| `replicaCounts.processors`                         | Number of processors | `2`                                      |
-| `replicaCounts.ondemands`                         | Number of on-demand workers | `2`                                      |
 
 
 # Make Commands 
@@ -175,8 +173,8 @@ First you need to get the IP address of the mysql service in your k8s deployment
 
 Next use the username and password
 ```
-kubectl get secret divvycloud-secret -o jsonpath={'.data.DIVVY_MYSQL_USER'}  | base64 -D
-kubectl get secret divvycloud-secret -o jsonpath={'.data.DIVVY_MYSQL_PASSWORD'}  | base64 -D
+kubectl get secret divvycloud-secret -o jsonpath={'.data.DIVVY_DB_USER'}  | base64 -D
+kubectl get secret divvycloud-secret -o jsonpath={'.data.DIVVY_DB_PASSWORD'}  | base64 -D
 ```
 
 Finally to backup a database:

@@ -1,54 +1,55 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "divvycloud.name" . }}-processor
+  name: {{ template "divvycloud.name" . }}-worker
   labels:
-    app: {{ template "divvycloud.name" . }}-processor
+    app: {{ template "divvycloud.name" . }}-worker
     chart: {{ template "divvycloud.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     app.kubernetes.io/name: {{ template "divvycloud.name" . }}
+
 spec:
-  replicas: {{ if .Values.replicaCounts  }}  {{ .Values.replicaCounts.processors | default 2 }} {{ else }} 2 {{ end }}
+  replicas: {{ if .Values.replicaCounts  }}  {{ .Values.replicaCounts.workers | default 2 }} {{ else }} 2 {{ end }}
   selector:
     matchLabels:
-      app: {{ template "divvycloud.name" . }}-processor
+      app: {{ template "divvycloud.name" . }}-worker
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "divvycloud.name" . }}-processor
+        app: {{ template "divvycloud.name" . }}-worker
         release: {{ .Release.Name }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.imageName }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
-          {{ if eq .Values.enablePlugins true }}
+          {{if eq .Values.enablePlugins true}}
           command: ['sh','/scripts/entrypoint.sh']
-          {{ end }}
-          args: ['divvycloudworker','-t','processor','-n']
+          {{end}}
+          args: ['divvycloud', 'worker']
           envFrom:
             - secretRef:
-                name: {{ template "divvycloud.name" . }}-secret
+                name: {{ template "divvycloud.name" . }}-secret 
           volumeMounts:
-          - name: entrypoint
-            mountPath: /scripts/
-         {{if eq .Values.enablePlugins true }}
+          {{if eq .Values.enablePlugins true}}
           - name: plugins
             mountPath: /tmpPlugins/
             readOnly: true
-          {{ end }}
-      {{ if .Values.imagePullSecret }}
+          {{end}}
+          - name: entrypoint
+            mountPath: /scripts/
+      {{if .Values.imagePullSecret}}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecret }}
-      {{ end }}
+      {{end}}
       volumes:
-      {{ if eq .Values.enablePlugins true }}
+      {{if eq .Values.enablePlugins true}}
       - name: plugins
         secret:
             secretName: divvycloud-plugins
-      {{ end }}
+      {{end}}
       - name: entrypoint
         secret:
             secretName: {{ template "divvycloud.name" . }}-entrypoint

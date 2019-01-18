@@ -84,10 +84,6 @@ internalLoadBalancer: true
 
 # DivvyCloud starting scale
 replicaCounts:
-  harvesters: 2
+  workers: 8
   interfaceservers: 2
   schedulers: 2
-  processors: 2
-  longharvesters: 2
-  ondemands: 2
-
