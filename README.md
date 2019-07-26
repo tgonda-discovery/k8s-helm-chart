@@ -57,7 +57,7 @@ The following table lists the configurable parameters of the Redis chart and the
 | `databasePassword`                         | Password paired with above  MySQL username| `divvy`                                      |
 | `pvcEnabled`                         | Use PVC storage for MySQL container (Not necessary if using external Db)| `true`                                      |
 | `storageSize`                         | Size of PVC Storage | `30G`                                      |
-| `enablePlugins`                         | Enable plugins| `false`                                      |
+| `enablePlugins`                         | Enable plugins, if enabled plugins/install must be run| `false`                                      |
 | `internalLoadBalancer`                         | Use GCE Internal load balancer | `true`                                      |
 | `autoIngress`                         | Use auto-ingress (for Nginx Ingress) | `false`                                      |
 | `httpProxy`                         | proxy addresses | `nil`                                      |
