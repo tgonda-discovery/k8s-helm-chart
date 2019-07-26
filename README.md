@@ -44,7 +44,10 @@ For instructions please see the [Helm github](https://github.com/helm/helm)
  * Step 7: make crd/install 
  * Step 8: kubectl create namespace divvycloud
    Customer can use custome namespace but needs to be set as an export bash value NAMESPACE
- * Step 9: kubectl create secret generic -n divvycloud --from-file=credentials.json=[FILE FROM GCP Service account].json
+ * Step 9: Create CloudSQLProxy Secret:
+ 
+ kubectl create secret generic -n divvycloud cloudsql-instance-credentials --from-file=credentials.json=[FILE FROM GCP Service account].json
+ 
  * Step 10: create value.yaml file 
  		 See https://github.com/DivvyCloud/k8s-helm-chart  for documentation on available values 
  		 Standard install you will want to have:
