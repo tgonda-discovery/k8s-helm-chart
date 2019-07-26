@@ -38,7 +38,7 @@ For instructions please see the [Helm github](https://github.com/helm/helm)
  * Step 3: Create divvy and divvykeys schemas
  * Step 4: Grant privs to divvy divvykeys to divvy user
  * Step 5: Generate GCP Service Account 
- 		 * _Make sure to add CloudSQL Client permissions to service account_
+  * _Make sure to add CloudSQL Client permissions to service account_
  * Step 6: git clone https://github.com/DivvyCloud/k8s-helm-chart 
  * Step 7: make crd/install 
  * Step 8: kubectl create namespace divvycloud
