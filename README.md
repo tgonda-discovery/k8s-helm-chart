@@ -43,7 +43,6 @@ For instructions please see the [Helm github](https://github.com/helm/helm)
  * Step 6: git clone https://github.com/DivvyCloud/k8s-helm-chart 
  * Step 7: make crd/install 
  * Step 8: kubectl create namespace divvycloud
-   <br>Customer can use custome namespace but needs to be set as an export bash value NAMESPACE
  * Step 9: Create CloudSQLProxy Secret:
  
  ```
