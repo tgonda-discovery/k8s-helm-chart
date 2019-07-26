@@ -32,28 +32,29 @@ For instructions please see the [Helm github](https://github.com/helm/helm)
 ## Steps 
 
  * Step 1: Create cloud SQL Db and GKE Cluster
- 	- Note: Please make sure GKE cluster and CloudSQL Db are in the same region and vpc network
+ 	** Note: Please make sure GKE cluster and CloudSQL Db are in the same region and vpc network
  * Step 2: Create divvy user 
- 	- Eg: create user divvy@'%' identified by 'divvy'
- Step 3: Create divvy and divvykeys schemas
- Step 4: Grant privs to divvy divvykeys to divvy user
- Step 5: Generate GCP Service Account 
- 		 - CloudSQL Client 
- Step 6: git clone https://github.com/DivvyCloud/k8s-helm-chart 
- Step 7: make crd/install 
- Step 8: kubectl create namespace divvycloud
- 	- Customer can use custome namespace but needs to be set as an export bash value NAMESPACE
- Step 9: kubectl create secret generic -n divvycloud --from-file=credentials.json=[FILE FROM GCP Service account].json
- Step 10: create value.yaml file 
- 		- See https://github.com/DivvyCloud/k8s-helm-chart  for documentation on available values 
- 		- Standard install you will want to have:
+ 	** Eg: create user divvy@'%' identified by 'divvy'
+ * Step 3: Create divvy and divvykeys schemas
+ * Step 4: Grant privs to divvy divvykeys to divvy user
+ * Step 5: Generate GCP Service Account 
+ 		 ** Make sure to add CloudSQL Client permissions to service account 
+    
+ * Step 6: git clone https://github.com/DivvyCloud/k8s-helm-chart 
+ * Step 7: make crd/install 
+ * Step 8: kubectl create namespace divvycloud
+ 	** Customer can use custome namespace but needs to be set as an export bash value NAMESPACE
+ * Step 9: kubectl create secret generic -n divvycloud --from-file=credentials.json=[FILE FROM GCP Service account].json
+ * Step 10: create value.yaml file 
+ 		** See https://github.com/DivvyCloud/k8s-helm-chart  for documentation on available values 
+ 		** Standard install you will want to have:
  			useExternalDb: True
  			cloudSQLInstanceName: [Cloud SQL Instance Name]
  			databaseUser: [ divvy user created in step 2]
  			databasePassword: [ divvy password created in step 2]
 
- Step 11.A (No helm installed in kube cluster): make app/install-notiller
- Step 11.B (Helm install in kubecluster): make app/install
+ * Step 11.A (No helm installed in kube cluster): make app/install-notiller
+ * Step 11.B (Helm install in kubecluster): make app/install
 
 
 
