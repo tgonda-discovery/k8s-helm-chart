@@ -31,9 +31,9 @@ For instructions please see the [Helm github](https://github.com/helm/helm)
 
 ## Steps 
 
- Step 1: Create cloud SQL Db and GKE Cluster
+ * Step 1: Create cloud SQL Db and GKE Cluster
  	- Note: Please make sure GKE cluster and CloudSQL Db are in the same region and vpc network
- Step 2: Create divvy user 
+ * Step 2: Create divvy user 
  	- Eg: create user divvy@'%' identified by 'divvy'
  Step 3: Create divvy and divvykeys schemas
  Step 4: Grant privs to divvy divvykeys to divvy user
