@@ -161,7 +161,7 @@ Once this is done, you will need to add enablePlugins to your values.yaml
 enablePlugins: true
 ```
 
-After updaing the values.yaml, simply run the make app/install command. If you have already deployed, the install command will simply update the containers in place - no need to delete and re-install. 
+After updating the values.yaml, simply run the make app/install command. If you have already deployed, the install command will simply update the containers in place - no need to delete and re-install. 
 
 
 # Installation 
