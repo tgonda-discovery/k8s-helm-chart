@@ -1,6 +1,7 @@
 
 
 ---
+{{- if eq .Values.useExternalRedis false }}
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
@@ -25,4 +26,6 @@ spec:
         name: {{ template "divvycloud.name" . }}-redis
         ports:
         - containerPort: 6379
+
+{{ end }}
 

@@ -44,6 +44,9 @@ storageSize: 30Gi
 
 # END OF DATABASE CONFIG #
 
+## Redis Config 
+userExternalRedis: false 
+#redisHost: 127.0.0.1
 
 ## INGRESS
 

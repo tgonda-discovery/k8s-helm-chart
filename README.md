@@ -31,7 +31,7 @@ For instructions please see the [Helm github](https://github.com/helm/helm)
 
 ## Steps 
 
- * Step 1: Create cloud SQL Db and GKE Cluster
+ * Step 1: Create cloud SQL Db, Memory Store, and GKE Cluster
   * _Note: Please make sure GKE cluster and CloudSQL Db are in the same region and vpc network_
  * Step 2: Create divvy user 
  	* Eg: create user divvy@'%' identified by 'divvy'
@@ -56,6 +56,8 @@ For instructions please see the [Helm github](https://github.com/helm/helm)
  			cloudSQLInstanceName: [Cloud SQL Instance Name]
  			databaseUser: [ divvy user created in step 2]
  			databasePassword: [ divvy password created in step 2]
+      useExternalRedis: True
+      redisHost: [ IP address of MemoryStore / External Redis]
 
  * Step 11.A (No helm installed in kube cluster): make app/install-notiller
  * Step 11.B (Helm install in kubecluster): make app/install
@@ -81,6 +83,8 @@ The following table lists the configurable parameters of the Redis chart and the
 | `databasePort`                         | Database Port. Do not change if using Google CloudSQL | `3306`                                      |
 | `databaseUser`                         | Username that has access to divvy/divvykeys schemas | `divvy`                                      |
 | `databasePassword`                         | Password paired with above  MySQL username| `divvy`                                      |
+| `useExternalRedis`                         | Use and external Redis/MemoryStore/ElastichCache server| `false`                                      |
+| `redisHost`                         | IP address of external Redis server. useExternalRedis must be set to true for this to work.| `nil`                                      |
 | `pvcEnabled`                         | Use PVC storage for MySQL container (Not necessary if using external Db)| `true`                                      |
 | `storageSize`                         | Size of PVC Storage | `30G`                                      |
 | `enablePlugins`                         | Enable plugins, if enabled plugins/install must be run| `false`                                      |
