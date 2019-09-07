@@ -33,8 +33,10 @@ app/upgrade:
 
 .PHONY: app/restart
 app/restart:
-	kubectl get deployment --namespace ${NAMESPACE} | grep -i divvycloud | grep -v mysq | grep -v redis | cut -d ' ' -f1 | xargs kubectl scale deployment --replicas=0 --namespace ${NAMESPACE}
-	kubectl get deployment --namespace ${NAMESPACE} | grep -i divvycloud | grep -v mysq | grep -v redis | cut -d ' ' -f1 | xargs kubectl scale deployment --replicas=2 --namespace ${NAMESPACE}
+	@echo "Scaling Suite Down"
+	@kubectl get deployment --namespace ${NAMESPACE} | grep -i divvycloud | grep -v mysq | grep -v redis | cut -d ' ' -f1 | xargs kubectl scale deployment --replicas=0 --namespace ${NAMESPACE}
+	@echo "Scaling Suite Up"
+	@kubectl get deployment --namespace ${NAMESPACE} | grep -i divvycloud | grep -v mysq | grep -v redis | cut -d ' ' -f1 | xargs kubectl scale deployment --replicas=2 --namespace ${NAMESPACE}
 
 .PHONY: plugins/uninstall
 plugins/uninstall:

@@ -87,7 +87,7 @@ The following table lists the configurable parameters of the Redis chart and the
 | `redisHost`                         | IP address of external Redis server. useExternalRedis must be set to true for this to work.| `nil`                                      |
 | `pvcEnabled`                         | Use PVC storage for MySQL container (Not necessary if using external Db)| `true`                                      |
 | `storageSize`                         | Size of PVC Storage | `30G`                                      |
-| `enablePlugins`                         | Enable plugins, if enabled plugins/install must be run| `false`                                      |
+| `enablePlugins`                         | Enable plugins. If enabled make plugins/install must be run. See installing plugins. | `true`                                      |
 | `internalLoadBalancer`                         | Use GCE Internal load balancer | `true`                                      |
 | `autoIngress`                         | Use auto-ingress (for Nginx Ingress) | `false`                                      |
 | `httpProxy`                         | proxy addresses | `nil`                                      |
@@ -160,12 +160,10 @@ To use plugins, simply put your uncompressed plugin into the plugins/ directory.
 make plugins/install 
 ```
 
-Once this is done, you will need to add enablePlugins to your values.yaml
+After plugins have been installed, we will restart the suite:
 ```
-enablePlugins: true
+make app/restart
 ```
-
-After updating the values.yaml, simply run the make app/install command. If you have already deployed, the install command will simply update the containers in place - no need to delete and re-install. 
 
 
 # Installation 
