@@ -89,6 +89,7 @@ The following table lists the configurable parameters of the Redis chart and the
 | `storageSize`                         | Size of PVC Storage | `30G`                                      |
 | `enablePlugins`                         | Enable plugins. If enabled make plugins/install must be run. See installing plugins. | `true`                                      |
 | `internalLoadBalancer`                         | Use GCE Internal load balancer | `true`                                      |
+| `ingress`                         | Ingress rules , see below ingress section| ``                                      |
 | `autoIngress`                         | Use auto-ingress (for Nginx Ingress) | `false`                                      |
 | `httpProxy`                         | proxy addresses | `nil`                                      |
 | `httpsProxy`                         | proxy addresses | `nil`                                      |
@@ -128,6 +129,26 @@ DivvyCloud will look for and use two database schemas:
 
 After these two schemas are created you will need to create and grant privileges to a MySQL user. 
 For more information on this topic please see our [Docs](http://docs.divvycloud.com/latest/installation/legacy.html)
+
+##### Ingress 
+
+You can use Ingress rules to tie DivvyCloud to a static IP address. At the moment, this is only supported in Google Cloud. 
+To you a static IP address, first you must reserve the address using Google Cloud console or API. Once that is done, take the "name" of the reservations 
+and use it for globalStaticName.
+
+
+```bash 
+ingress:
+  enabled: true
+  globalStaticName: "GCP Global Static Ip Address Name"
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+    - secretName: chart-example-tls
+      hosts:
+        - chart-example.local
+```
 
 ##### Google CloudSQL
 

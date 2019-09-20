@@ -45,19 +45,19 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     app.kubernetes.io/name: {{ template "divvycloud.name" . }}
-  {{ if (.Values.autoIngress) and eq .Value.autoIngress true }} 
+  {{- if (.Values.autoIngress) and eq .Value.autoIngress true }} 
     auto-ingress/enabled: 'enabled'
   {{ end }}
-  {{ if .Values.internalLoadBalancer }}
+  {{- if .Values.internalLoadBalancer }}
   annotations:
     cloud.google.com/load-balancer-type: "Internal"
   {{ end }}
 spec:
-  {{ if (.Values.autoIngress) and eq .Value.autoIngress true }} 
+  {{- if (.Values.autoIngress) and eq .Value.autoIngress true }} 
   type: ClusterIP
-  {{ else  }}
+  {{ else }}
   type:  LoadBalancer
-  {{ end  }}
+  {{ end }}
   ports:
     - port: {{ .Values.interfaceserver_port | default "8001" }}
   selector:
