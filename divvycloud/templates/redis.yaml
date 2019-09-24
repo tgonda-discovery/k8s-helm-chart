@@ -1,5 +1,3 @@
-
-
 ---
 {{- if eq .Values.useExternalRedis false }}
 apiVersion: apps/v1beta2
